@@ -4,10 +4,21 @@
       <v-layout row wrap>
         <v-flex xs12 sm6 md3 offset-md3>
           <v-text-field
-            label="query"
-            v-model="query"
-            @keypress.enter="submitQuery"
-            @change="submitQuery"
+            label="query1"
+            v-model="query1"
+            @keypress.enter="submitQuery1"
+            @change="submitQuery1"
+            :loading="loading1"
+            outline
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12 sm6 md3>
+          <v-text-field
+            label="query2"
+            v-model="query2"
+            @keypress.enter="submitQuery2"
+            @change="submitQuery2"
+            :loading="loading2"
             outline
           ></v-text-field>
         </v-flex>
@@ -20,7 +31,7 @@
               <v-layout row wrap>
                 <v-flex
                   v-for="image in imageList"
-                  :key="image.id"
+                  :key="image.id + image.rh"
                   xs4 sm4 md2
                   d-flex
                 >
@@ -52,26 +63,74 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import axios from 'axios';
 
 @Component({})
 export default class App extends Vue {
-  private query!: string | null;
-  private imageList: any[] | null;
+  private query1!: string;
+  private query2!: string;
+  private resultList1: any[];
+  private resultList2: any[];
+  private loading1: boolean;
+  private loading2: boolean;
+  private imageList: any[];
 
   public constructor() {
     super();
-    this.query = null;
-    this.imageList = null;
+    this.query1 = '';
+    this.query2 = '';
+    this.resultList1 = [];
+    this.resultList2 = [];
+    this.loading1 = false;
+    this.loading2 = false;
+    this.imageList = [];
   }
 
-  private submitQuery() {
+  private submitQuery1() {
+    this.loading1 = true;
     axios
-      .get(`/api/?q=${this.query}`)
-      .then((res) => (
-        this.imageList = res.data
-      ));
+      .get(`/api/?q=${this.query1}`)
+      .then((res) => {
+        this.resultList1 = [];
+        this.resultList1 = res.data;
+        this.loading1 = false;
+      });
+  }
+
+  private submitQuery2() {
+    this.loading2 = true;
+    axios
+      .get(`/api/?q=${this.query2}`)
+      .then((res) => {
+        this.resultList2 = [];
+        this.resultList2 = res.data;
+        this.loading2 = false;
+      });
+  }
+
+  @Watch('resultList1')
+  private onChangeResultList1() {
+    this.setImageList();
+  }
+
+  @Watch('resultList2')
+  private onChangeResultList2() {
+    this.setImageList();
+  }
+
+  private setImageList() {
+    this.imageList = [];
+    const maxLength: number = (this.resultList1.length > this.resultList2.length) ?
+      this.resultList1.length : this.resultList2.length;
+    for (let i = 0; i < maxLength; i++) {
+      if (this.resultList1[i]) {
+        this.imageList.push(this.resultList1[i]);
+      }
+      if (this.resultList2[i]) {
+        this.imageList.push(this.resultList2[i]);
+      }
+    }
   }
 }
 </script>
