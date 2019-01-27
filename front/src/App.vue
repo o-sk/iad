@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import axios from 'axios';
 
 @Component({})
@@ -74,7 +74,6 @@ export default class App extends Vue {
   private resultList2: any[];
   private loading1: boolean;
   private loading2: boolean;
-  private imageList: any[];
 
   public constructor() {
     super();
@@ -84,7 +83,6 @@ export default class App extends Vue {
     this.resultList2 = [];
     this.loading1 = false;
     this.loading2 = false;
-    this.imageList = [];
   }
 
   private submitQuery1() {
@@ -109,28 +107,19 @@ export default class App extends Vue {
       });
   }
 
-  @Watch('resultList1')
-  private onChangeResultList1() {
-    this.setImageList();
-  }
-
-  @Watch('resultList2')
-  private onChangeResultList2() {
-    this.setImageList();
-  }
-
-  private setImageList() {
-    this.imageList = [];
+  get imageList() {
+    const imageList: any[] = [];
     const maxLength: number = (this.resultList1.length > this.resultList2.length) ?
       this.resultList1.length : this.resultList2.length;
     for (let i = 0; i < maxLength; i++) {
       if (this.resultList1[i]) {
-        this.imageList.push(this.resultList1[i]);
+        imageList.push(this.resultList1[i]);
       }
       if (this.resultList2[i]) {
-        this.imageList.push(this.resultList2[i]);
+        imageList.push(this.resultList2[i]);
       }
     }
+    return imageList;
   }
 }
 </script>
