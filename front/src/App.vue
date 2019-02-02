@@ -3,11 +3,9 @@
     v-container
       v-layout(row wrap)
         v-flex(xs12 sm6 md3 offset-md3)
-          v-text-field(label="query1" v-model="query1" @keypress.enter="submitQuery1" @change="submitQuery1"
-            :loading="loading1" outline)
+          query-field(label="query1" @get="get1" @fail="fail1")
         v-flex(xs12 sm6 md3)
-          v-text-field(label="query2" v-model="query2" @keypress.enter="submitQuery2" @change="submitQuery2"
-            :loading="loading2" outline)
+          query-field(label="query2" @get="get2" @fail="fail2")
 
       v-layout
         v-flex(xs12 sm12 md12)
@@ -23,47 +21,37 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import axios from 'axios';
+import QueryField from '@/components/QueryField.vue';
 
-@Component({})
+@Component({
+  components: { QueryField },
+})
 export default class App extends Vue {
-  private query1!: string;
-  private query2!: string;
   private resultList1: any[];
   private resultList2: any[];
-  private loading1: boolean;
-  private loading2: boolean;
 
   public constructor() {
     super();
-    this.query1 = '';
-    this.query2 = '';
     this.resultList1 = [];
     this.resultList2 = [];
-    this.loading1 = false;
-    this.loading2 = false;
   }
 
-  private submitQuery1() {
-    this.loading1 = true;
-    axios
-      .get(`/api/?q=${this.query1}`)
-      .then((res) => {
-        this.resultList1 = [];
-        this.resultList1 = res.data;
-        this.loading1 = false;
-      });
+  private get1(result: any) {
+    this.resultList1 = [];
+    this.resultList1 = result;
   }
 
-  private submitQuery2() {
-    this.loading2 = true;
-    axios
-      .get(`/api/?q=${this.query2}`)
-      .then((res) => {
-        this.resultList2 = [];
-        this.resultList2 = res.data;
-        this.loading2 = false;
-      });
+  private get2(result: any) {
+    this.resultList2 = [];
+    this.resultList2 = result;
+  }
+
+  private fail1() {
+    this.resultList1 = [];
+  }
+
+  private fail2() {
+    this.resultList2 = [];
   }
 
   get imageList() {
