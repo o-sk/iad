@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import axios from 'axios';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import axios from "axios";
 
 @Component({})
 export default class QueryField extends Vue {
@@ -14,7 +14,7 @@ export default class QueryField extends Vue {
 
   public constructor() {
     super();
-    this.query = '';
+    this.query = "";
     this.loading = false;
   }
 
@@ -22,13 +22,13 @@ export default class QueryField extends Vue {
     this.loading = true;
     axios
       .get(`/api/?q=${this.query}`)
-      .then((res) => {
+      .then(res => {
         this.loading = false;
-        this.$emit('get', res.data);
+        this.$emit("get", res.data);
       })
-      .catch((e) => {
+      .catch(e => {
         this.loading = false;
-        this.$emit('fail');
+        this.$emit("fail");
       });
   }
 }

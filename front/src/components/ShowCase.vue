@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class ShowCase extends Vue {
@@ -19,8 +19,10 @@ export default class ShowCase extends Vue {
 
   get imageList() {
     const imageList: any[] = [];
-    const maxLength: number = (this.imageList1.length > this.imageList2.length) ?
-      this.imageList1.length : this.imageList2.length;
+    const maxLength: number =
+      this.imageList1.length > this.imageList2.length
+        ? this.imageList1.length
+        : this.imageList2.length;
     for (let i = 0; i < maxLength; i++) {
       if (this.imageList1[i]) {
         imageList.push(this.imageList1[i]);

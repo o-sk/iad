@@ -13,12 +13,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import QueryField from '@/components/QueryField.vue';
-import ShowCase from '@/components/ShowCase.vue';
+import { Component, Vue } from "vue-property-decorator";
+import QueryField from "@/components/QueryField.vue";
+import ShowCase from "@/components/ShowCase.vue";
 
 @Component({
-  components: { QueryField, ShowCase },
+  components: { QueryField, ShowCase }
 })
 export default class App extends Vue {
   private resultList1: any[];
