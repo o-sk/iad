@@ -16,4 +16,7 @@ describe("ShowCase", () => {
     expect(wrapper.vm.$props.imageList1).toEqual([1, 2]);
     expect(wrapper.vm.$props.imageList2).toEqual([11, 12]);
   });
+
+  xtest("computed", () => {
+  });
 });
