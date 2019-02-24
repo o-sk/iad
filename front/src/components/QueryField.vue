@@ -9,14 +9,8 @@ import axios from "axios";
 @Component({})
 export default class QueryField extends Vue {
   @Prop() private label!: string;
-  private query: string;
-  private loading: boolean;
-
-  public constructor() {
-    super();
-    this.query = "";
-    this.loading = false;
-  }
+  private query: string = "";
+  private loading: boolean = false;
 
   private submitQuery() {
     this.loading = true;
